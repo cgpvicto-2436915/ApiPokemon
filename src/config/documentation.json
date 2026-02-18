@@ -27,6 +27,141 @@
                     }
                 }
             }
+        },        
+        "/api/pokemons" : {
+            "post": {
+                "summary": "Ajouter un Pokémon",
+                "tags": ["Ajouter Pokémon"],
+                "description": "Ajouter un pokémon en fournissant un nom, le type_primaire, le type_secondaire, les pv, l'attaque et la défense",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "nom": {
+                                        "type": "string",
+                                        "example": "Charetard"
+                                    },
+                                    "type_primaire": {
+                                        "type": "string",
+                                        "example": "Fire"
+                                    },
+                                    "type_secondaire": {
+                                        "type": "string",
+                                        "example": "Flying",
+                                        "nullable": true
+                                    },
+                                    "pv": {
+                                        "type": "integer",
+                                        "example": 78
+                                    },
+                                    "attaque": {
+                                        "type": "integer",
+                                        "example": 84
+                                    },
+                                    "defense": {
+                                        "type": "integer",
+                                        "example": 78
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Pokémon ajouté avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Le pokemon [Charetard] a été ajouté avec succès"
+                                        },
+                                        "pokemon": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1073
+                                                },
+                                                "nom": {
+                                                    "type": "string",
+                                                    "example": "Charetard"
+                                                },
+                                                "type_primaire": {
+                                                    "type": "string",
+                                                    "example": "Fire"
+                                                },
+                                                "type_secondaire": {
+                                                    "type": "string",
+                                                    "example": "Flying",
+                                                    "nullable": true
+                                                },
+                                                "pv": {
+                                                    "type": "integer",
+                                                    "example": 78
+                                                },
+                                                "attaque": {
+                                                    "type": "integer",
+                                                    "example": 84
+                                                },
+                                                "defense": {
+                                                    "type": "integer",
+                                                    "example": 78
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erreur de paramètres manquants",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "erreur": {
+                                            "type": "string",
+                                            "example": "Le format des données est invalide"
+                                        },
+                                        "champ_manquant": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            },
+                                            "example": ["pv", "attaque"]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500" : {
+                        "description": "Erreur serveur",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Echec lors de la création du pokemon [Charitard]"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         },
         "/api/pokemons/{id}": {
             "get": {
@@ -117,13 +252,141 @@
                         }
                     }
                 }
+            },
+            "put" : {
+                "description" : "Modifie le pokemon avec l'identifiant au choix",
+                "summary" : "Modifier pokemon avec l'ID",
+                "tags" : ["Pokemon ID"],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "description": "Id du pokémon",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32",
+                            "example" : 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "nom": {
+                                        "type": "string",
+                                        "example": ""
+                                    },
+                                    "type_primaire": {
+                                        "type": "string",
+                                        "example": ""
+                                    },
+                                    "type_secondaire": {
+                                        "type": "string",
+                                        "example": "",
+                                        "nullable": true
+                                    },
+                                    "pv": {
+                                        "type": "integer",
+                                        "example": 0
+                                    },
+                                    "attaque": {
+                                        "type": "integer",
+                                        "example": 0
+                                    },
+                                    "defense": {
+                                        "type": "integer",
+                                        "example": 0
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Pokémon modifié avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Le pokemon id [id] a été modifié avec succès"
+                                        }
+                                    }
+                                }   
+                            }
+                        }
+                    },
+                    "404" : {
+                        "description": "Pokémon non rencontré",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "erreur": {
+                                            "type": "string",
+                                            "example": "Le pokemon id [id] n'existe pas dans la base de données"
+                                        }
+                                    }
+                                }   
+                            }
+                        }
+                    },
+                    "400" : {
+                        "description": "Erreur de paramètres manquants",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "erreur": {
+                                            "type": "string",
+                                            "example": "Le format des données est invalide"
+                                        },
+                                        "champs_manquants": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            },
+                                            "example": ["pv", "attaque"]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500" : {
+                        "description": "Pokémon non modifié",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "erreur": {
+                                            "type": "string",
+                                            "example": "Echec lors de la modification du pokemon [nom_du_pokemon]"
+                                        }
+                                    }
+                                }   
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/pokemons/liste":{
         
             "get": {
                 "summary": "Récupérer une page de la liste de pokemons",
-                "tags": ["Pokemon ID"],
+                "tags": ["Pokemon liste"],
                 "description": "Récupérer un pokemon en fonction de son id",
                 "parameters": [
                     {
@@ -156,7 +419,43 @@
                                 "schema": {
                                     "type": "object",
                                     "properties": {
-                                        
+                                        "pokemons":{
+                                            "type":"array",
+                                            "items":{
+                                                "type":"object",
+                                                "properties":{
+                                                    "id":{
+                                                        "type":"integer",
+                                                        "example":"1"
+                                                    },
+                                                    "nom": {
+                                                        "type": "string",
+                                                        "example": "Nidoking"
+                                                    },
+                                                    "type_primaire": {
+                                                        "type": "string",
+                                                        "example": "Poison"
+                                                    },
+                                                    "type_secondaire": {
+                                                        "type": "string",
+                                                        "nullable": true,
+                                                        "example": "Ground"
+                                                    },
+                                                    "pv": {
+                                                        "type": "integer",
+                                                        "example": 81
+                                                    },
+                                                    "attaque": {
+                                                        "type": "integer",
+                                                        "example": 102
+                                                    },
+                                                    "defense": {
+                                                        "type": "integer",
+                                                        "example": 77
+                                                    }
+                                                }
+                                            }
+                                        },
                                         "type":{
                                             "type": "string",
                                             "example": "grass"
