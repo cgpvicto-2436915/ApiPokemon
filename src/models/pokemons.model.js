@@ -19,10 +19,10 @@ const getPokemon = async (id) => {
 };
 const listeToutePokemons = async(type) =>{
         if(type){
-            var requete = `SELECT nom,type_primaire,type_secondaire,pv,attaque,defense FROM pokemon WHERE type_primaire = $1 ORDER BY nom`;
+            var requete = `SELECT id,nom,type_primaire,type_secondaire,pv,attaque,defense FROM pokemon WHERE type_primaire = $1 ORDER BY nom`;
             var params = [type];            
         } else{
-            var requete = `SELECT nom,type_primaire,type_secondaire,pv,attaque,defense FROM pokemon ORDER BY nom`;
+            var requete = `SELECT id,nom,type_primaire,type_secondaire,pv,attaque,defense FROM pokemon ORDER BY nom`;
         }  
 
 
